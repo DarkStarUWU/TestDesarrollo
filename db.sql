@@ -1,0 +1,1 @@
+CREATE TABLE Formulario(NumeroPresu text, Cliente text, Fecha_Solic interval, Comercial text, Asistente text, Compro_Pago bytea, Compro_Proove bytea);
