@@ -8,12 +8,14 @@ from tkinter import Entry, Frame, Tk, Canvas, Frame, Label, OptionMenu, StringVa
 from turtle import left
 import psycopg2
 
- 
+
  
 class Main():
     
     def __init__(self, windows):
+
         ArrayComercial = ['Vanesa Castaño', 'Jorge Calvo', 'Aniket Kanurkar', 'Gengis Rovi']
+
         self.wind = windows
         self.wind.title('Products application')
         self.canvas  = Canvas(self.wind, height=1000, width=1000)
@@ -47,13 +49,13 @@ class Main():
         opcion = OptionMenu(self.frame, var, *ArrayComercial)
         opcion.config(width=20)
         opcion.pack(side='bottom', padx= 200, pady=240,  ipadx = 100, ipady=10)
-        entry_Comercial  = Entry(frame)
+        entry_Comercial  = Entry(self.frame)
 
 
 
-        entry_NumeroPresu  = Entry(frame)
+        entry_NumeroPresu  = Entry(self.frame)
         entryFecha.bind("<Key>", FechaEscriba)
-        entryFecha.bind("<BackSpace>", lambda :entryFecha(root.END))
+        entryFecha.bind("<BackSpace>", lambda :entryFecha(self.root.END))
 
 if __name__ == '__main__':
     windows = Tk()
