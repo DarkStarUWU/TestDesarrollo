@@ -1,7 +1,8 @@
 
-from sqlite3 import Row
+
 from tkinter import Entry, Frame, Tk, Canvas, Frame, Label, OptionMenu, StringVar, Button, filedialog
 import psycopg2
+
 
 
  
@@ -71,15 +72,15 @@ class Ventana():
         
         
         
-        self.botton_ComproPago = Button(self.frame, text="Adjuntar", command=self.AbrirArchivo)
+        self.botton_ComproPago = Button(self.frame, text="Adjuntar", command=self.AbrirArchivo1)
         self.botton_ComproPago.place(x=200, y=380)
 
-        self.botton_ComproProove = Button(self.frame, text="Adjuntar", command=self.AbrirArchivo)
+        self.botton_ComproProove = Button(self.frame, text="Adjuntar", command=self.AbrirArchivo2)
         self.botton_ComproProove.place(x=200, y=450)
         
         
         self.botton_Guardar = Button(self.frame, text="Guardar", command=lambda:self.GuardarFormulario())
-        self.botton_Guardar.place(x=200, y=700)
+        self.botton_Guardar.place(x=200, y=0)
         
     def FechaEscriba(self, event):
         if event.char.isdigit():
@@ -104,11 +105,26 @@ class Ventana():
         else:
             return "break"
         
-    def AbrirArchivo(self):
+    def AbrirArchivo1(self):
+        global p
         archivo = filedialog.askopenfilename(title="abrir", initialdir="C:/", filetypes=[["Archivos de Imagen", "*.jpg"]])
-        print(archivo)
+        with open(archivo, "rb") as omage:
+            image = omage.read()
+            p = bytearray(image)
+        return p
+
+    def AbrirArchivo2(self):
+        global b
+        archivo = filedialog.askopenfilename(title="abrir", initialdir="C:/", filetypes=[["Archivos de Imagen", "*.jpg"]])
+        with open(archivo, "rb") as omage:
+            image = omage.read()
+            b = bytearray(image)
+        return b
+    
+
         
     def GuardarFormulario(self,*args):
+        
         try:
             conn = psycopg2.connect(dbname="postgres",
                             user="postgres", 
@@ -119,10 +135,10 @@ class Ventana():
         except: 
             print("Unable to connect to database")
         try:
-            
+           
             cursor = conn.cursor()
-            query =  "INSERT INTO Formulario(NumeroPresu,Cliente,Fecha_Solic,Comercial,Asistente, Compro_Pago, Compro_Proove) VALUES (%s, %s, %s, %s, %s,%s, %s)"
-            info =  self.entry_NumeroPresu.get(),self.entry_Cliente.get(),self.entryFecha.get(), self.var1.get(), self.var2.get(), self.botton_ComproPago.get(), self.botton_ComproProove.get()
+            query =  "INSERT INTO Formulario(NumeroPresu,Cliente,Fecha_Solic,Comercial,Asistente,Compro_Pago, Compro_Proove) VALUES (%s,%s, %s,%s, %s,%s, %s)"
+            info =   self.entry_NumeroPresu.get(),self.entry_Cliente.get(),self.entryFecha.get(), self.var1.get(), self.var2.get(), p, b
             cursor.execute(query, info)
             print("save")
             conn.commit()
